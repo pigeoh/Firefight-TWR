@@ -20,6 +20,7 @@
             justify-content: center;
             align-items: center;
             padding: 20px;
+            overflow: hidden;
         }
 
         .menu-container {
@@ -30,6 +31,28 @@
             border-radius: 12px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
             transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* 页面切换效果 */
+        .page {
+            transition: transform 0.5s ease, opacity 0.5s ease;
+            width: 100%;
+        }
+        
+        .page.hidden {
+            transform: translateX(-100%);
+            opacity: 0;
+            position: absolute;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+        }
+        
+        .page.active {
+            transform: translateX(0);
+            opacity: 1;
         }
 
         /* 图标容器样式 */
@@ -53,11 +76,10 @@
             padding: 1rem;
             overflow: hidden;
         }
-
+        
         .icon-placeholder img {
             max-width: 100%;
             max-height: 100%;
-            border-radius: 8px;
             object-fit: contain;
         }
 
@@ -107,7 +129,7 @@
             position: absolute;
             width: 0;
             height: 2px;
-            background: #ff0000;
+            background: #ff0000; /* 红色下划线 */
             bottom: 0;
             left: 0;
             transition: width 0.3s ease;
@@ -124,7 +146,7 @@
 
         /* 下载按钮动画 */
         .download-btn {
-            background: #b30000;
+            background: #b30000; /* 深红色按钮 */
             color: white;
             padding: 1rem 2rem;
             border-radius: 25px;
@@ -135,7 +157,8 @@
             max-width: 300px;
             text-decoration: none;
             text-align: center;
-            position: relative;
+            cursor: pointer;
+            border: none;
         }
 
         .download-btn::after {
@@ -143,7 +166,7 @@
             position: absolute;
             width: 0;
             height: 2px;
-            background: #ff0000;
+            background: #ff0000; /* 红色下划线 */
             bottom: 0;
             left: 0;
             transition: width 0.3s ease;
@@ -156,6 +179,100 @@
 
         .download-btn:hover::after {
             width: 100%;
+        }
+
+        /* 第二页样式 */
+        .help-page {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .help-title {
+            padding: 1.5rem;
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            font-weight: 600;
+            color: #f0f0f0;
+            border-bottom: 2px solid #333;
+            margin-bottom: 2rem;
+            text-align: center;
+            width: 100%;
+        }
+        
+        .help-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+            width: 100%;
+            margin-top: 1rem;
+        }
+        
+        .help-button {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            padding: 2rem;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            max-width: 300px;
+            width: 100%;
+            text-align: center;
+        }
+        
+        .help-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+        
+        .help-icon {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-size: 2.5rem;
+            color: white;
+        }
+        
+        .qq-button {
+            background: #12b7f5; /* QQ主题色 */
+        }
+        
+        .discord-button {
+            background: #5865f2; /* Discord主题色 */
+        }
+        
+        .button-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: white;
+        }
+        
+        .button-desc {
+            font-size: 1rem;
+            color: rgba(255,255,255,0.8);
+        }
+        
+        .back-button {
+            background: #333;
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            margin-top: 2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+        
+        .back-button:hover {
+            background: #444;
+            transform: translateY(-2px);
         }
 
         /* 响应式设计 */
@@ -175,6 +292,11 @@
             .icon-placeholder {
                 width: 180px;
                 height: 180px;
+            }
+            
+            .help-buttons {
+                flex-direction: column;
+                align-items: center;
             }
         }
 
@@ -212,6 +334,10 @@
                 width: 150px;
                 height: 150px;
             }
+            
+            .help-button {
+                padding: 1.5rem;
+            }
         }
 
         @media (max-width: 480px) {
@@ -232,24 +358,103 @@
                 height: 120px;
                 font-size: 0.8rem;
             }
+            
+            .help-button {
+                padding: 1rem;
+            }
+            
+            .help-icon {
+                width: 60px;
+                height: 60px;
+                font-size: 2rem;
+            }
         }
     </style>
 </head>
 <body>
     <nav class="menu-container">
-        <div class="icon-container">
-            <div class="icon-placeholder">
-                <img src="https://raw.githubusercontent.com/pigeoh/Firefight-TWR/main/icon.png" alt="Firefight TWR Icon" onerror="this.style.display='none'; this.parentElement.innerHTML='图标加载失败<br>请检查图片路径';">
+        <!-- 主页面 -->
+        <div class="page active" id="main-page">
+            <div class="icon-container">
+                <div class="icon-placeholder">
+                    <img src="https://raw.githubusercontent.com/pigeoh/Firefight-TWR/main/icon.png" alt="icon" onerror="this.style.display='none'; this.parentNode.innerHTML='图标加载失败'">
+                </div>
             </div>
+            
+            <h1 class="menu-title">交战：冷战热斗</h1>
+            <ul class="nav-list">
+                <li class="nav-item"><a href="#" class="nav-link">介绍</a></li>
+                <li class="nav-item"><a href="#" class="nav-link">内容百科</a></li>
+                <li class="nav-item"><a href="#" class="nav-link">鸣谢</a></li>
+                <li class="nav-item">
+                    <button class="nav-link download-btn" id="help-button">获取帮助？</button>
+                </li>
+            </ul>
         </div>
         
-        <h1 class="menu-title">交战：冷战热斗</h1>
-        <ul class="nav-list">
-            <li class="nav-item"><a href="#" class="nav-link">介绍</a></li>
-            <li class="nav-item"><a href="#" class="nav-link">内容百科</a></li>
-            <li class="nav-item"><a href="#" class="nav-link">鸣谢</a></li>
-            <li class="nav-item"><a href="#" class="nav-link download-btn">获取帮助？</a></li>
-        </ul>
+        <!-- 帮助页面 -->
+        <div class="page hidden" id="help-page">
+            <div class="help-page">
+                <h2 class="help-title">获取帮助</h2>
+                
+                <div class="help-buttons">
+                    <a href="https://qun.qq.com/universal-share/share?ac=1&authKey=htl9ZMJOxDI3UZ05gbbiG2%2BjqosCkZRdWUrsSRKtRwWeIbxrkRZ4%2FsMgzYPdklJu&busi_data=eyJncm91cENvZGUiOiI3NjczOTA5MTQiLCJ0b2tlbiI6InZEajQ3NlZ1UDJzZ24weGhSeWcvN2ozajU1MjJOTWdyU0daaHYybHJ5TWZ2NlBUei83K0tIaVYzWGo3VVFHaFUiLCJ1aW4iOiIxNjg0NzgxNDEifQ%3D%3D&data=rrTbqqkhWN_2d723UHIhrUcCpgVwdevfTUJwzuois1IKTOlbnVnrhAvCOLZ_IcklUEl4lf0eJyOxbVr1M84LEg&svctype=4&tempid=h5_group_info" 
+                       class="help-button qq-button" target="_blank">
+                        <div class="help-icon" style="background: #12b7f5;">
+                            <img src="https://raw.githubusercontent.com/pigeoh/Firefight-TWR/main/icon-qq.png" alt="icon_qq" onerror="this.style.display='none'; this.parentNode.innerHTML='图标加载失败'">
+                        </div>
+                        <div class="button-title">QQ群</div>
+                        <div class="button-desc">加入我们的QQ群获取帮助</div>
+                    </a>
+                    
+                    <a href="https://discord.com/channels/1007568260918693959/1209175441420722186" 
+                       class="help-button discord-button" target="_blank">
+                        <div class="help-icon" style="background: #5865f2;">
+                            <img src="https://raw.githubusercontent.com/pigeoh/Firefight-TWR/main/icon-discord.png" alt="icon_dc" onerror="this.style.display='none'; this.parentNode.innerHTML='图标加载失败'">
+                        </div>
+                        <div class="button-title">Discord</div>
+                        <div class="button-desc">加入我们的Discord服务器</div>
+                    </a>
+                </div>
+                
+                <button class="back-button" id="back-button">返回</button>
+            </div>
+        </div>
     </nav>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const helpButton = document.getElementById('help-button');
+            const backButton = document.getElementById('back-button');
+            const mainPage = document.getElementById('main-page');
+            const helpPage = document.getElementById('help-page');
+            
+            // 点击"获取帮助"按钮
+            helpButton.addEventListener('click', function() {
+                // 添加过渡类
+                mainPage.classList.add('hidden');
+                mainPage.classList.remove('active');
+                
+                // 短暂延迟后显示帮助页面
+                setTimeout(function() {
+                    helpPage.classList.remove('hidden');
+                    helpPage.classList.add('active');
+                }, 50);
+            });
+            
+            // 点击返回按钮
+            backButton.addEventListener('click', function() {
+                // 添加过渡类
+                helpPage.classList.add('hidden');
+                helpPage.classList.remove('active');
+                
+                // 短暂延迟后显示主页面
+                setTimeout(function() {
+                    mainPage.classList.remove('hidden');
+                    mainPage.classList.add('active');
+                }, 50);
+            });
+        });
+    </script>
 </body>
 </html>
