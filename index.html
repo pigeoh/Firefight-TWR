@@ -20,7 +20,7 @@
             justify-content: center;
             align-items: center;
             padding: 20px;
-            overflow: hidden;
+            /* 移除 overflow: hidden 允许页面滚动 */
         }
 
         .menu-container {
@@ -32,7 +32,7 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
             transition: all 0.3s ease;
             position: relative;
-            overflow: hidden;
+            /* 移除 overflow: hidden 允许内容滚动 */
         }
 
         /* 页面切换效果 */
@@ -284,6 +284,69 @@
             transform: translateY(-2px);
         }
 
+        /* 鸣谢页面样式 */
+        .thanks-page {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .thanks-title {
+            padding: 1.5rem;
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            font-weight: 600;
+            color: #f0f0f0;
+            border-bottom: 2px solid #333;
+            margin-bottom: 2rem;
+            text-align: center;
+            width: 100%;
+        }
+        
+        .thanks-content {
+            width: 100%;
+            max-width: 800px;
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #f0f0f0;
+            line-height: 1.6;
+        }
+        
+        .contributors {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem;
+            width: 100%;
+            margin-top: 1rem;
+        }
+        
+        .contributor-card {
+            background: #2a2a2a;
+            border-radius: 8px;
+            padding: 1.5rem;
+            width: 100%;
+            max-width: 250px;
+            text-align: center;
+            transition: transform 0.3s ease, background 0.3s;
+        }
+        
+        .contributor-card:hover {
+            transform: translateY(-3px);
+            background: #333;
+        }
+        
+        .contributor-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #f0f0f0;
+            margin-bottom: 0.5rem;
+        }
+        
+        .contributor-role {
+            font-size: 1rem;
+            color: #888;
+        }
+
         /* 响应式设计 */
         @media (max-width: 1024px) {
             .menu-container {
@@ -304,6 +367,11 @@
             }
             
             .help-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .contributors {
                 flex-direction: column;
                 align-items: center;
             }
@@ -352,6 +420,10 @@
                 width: 60px;
                 height: 60px;
             }
+            
+            .contributor-card {
+                max-width: 100%;
+            }
         }
 
         @media (max-width: 480px) {
@@ -398,7 +470,7 @@
             <ul class="nav-list">
                 <li class="nav-item"><a href="#" class="nav-link">介绍</a></li>
                 <li class="nav-item"><a href="#" class="nav-link">内容百科</a></li>
-                <li class="nav-item"><a href="#" class="nav-link">鸣谢</a></li>
+                <li class="nav-item"><a href="#" class="nav-link" id="thanks-link">鸣谢</a></li>
                 <li class="nav-item">
                     <button class="nav-link download-btn" id="help-button">获取帮助？</button>
                 </li>
@@ -433,39 +505,77 @@
                 <button class="back-button" id="back-button">返回</button>
             </div>
         </div>
+        
+        <!-- 鸣谢页面 -->
+        <div class="page hidden" id="thanks-page">
+            <div class="thanks-page">
+                <h2 class="thanks-title">鸣谢</h2>
+                
+                <div class="thanks-content">
+                    <p>感谢以下贡献者为项目付出的努力和支持：</p>
+                </div>
+                
+                <div class="contributors">
+                    <div class="contributor-card">
+                        <div class="contributor-name">Sasha Braus</div>
+                        <div class="contributor-role">项目负责人</div>
+                    </div>
+                    
+                    <div class="contributor-card">
+                        <div class="contributor-name">Wudoo</div>
+                        <div class="contributor-role">游戏代码</div>
+                    </div>
+                    
+                    <div class="contributor-card">
+                        <div class="contributor-name">你</div>
+                        <div class="contributor-role">游玩本模组</div>
+                    </div>
+                </div>
+                
+                <button class="back-button" id="back-button-thanks">返回</button>
+            </div>
+        </div>
     </nav>
     
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const helpButton = document.getElementById('help-button');
+            const thanksLink = document.getElementById('thanks-link');
             const backButton = document.getElementById('back-button');
+            const backButtonThanks = document.getElementById('back-button-thanks');
             const mainPage = document.getElementById('main-page');
             const helpPage = document.getElementById('help-page');
+            const thanksPage = document.getElementById('thanks-page');
+            
+            // 页面切换函数
+            function switchPage(fromPage, toPage) {
+                fromPage.classList.add('hidden');
+                fromPage.classList.remove('active');
+                
+                setTimeout(function() {
+                    toPage.classList.remove('hidden');
+                    toPage.classList.add('active');
+                }, 50);
+            }
             
             // 点击"获取帮助"按钮
             helpButton.addEventListener('click', function() {
-                // 添加过渡类
-                mainPage.classList.add('hidden');
-                mainPage.classList.remove('active');
-                
-                // 短暂延迟后显示帮助页面
-                setTimeout(function() {
-                    helpPage.classList.remove('hidden');
-                    helpPage.classList.add('active');
-                }, 50);
+                switchPage(mainPage, helpPage);
             });
             
-            // 点击返回按钮
+            // 点击"鸣谢"链接
+            thanksLink.addEventListener('click', function() {
+                switchPage(mainPage, thanksPage);
+            });
+            
+            // 点击帮助页面的返回按钮
             backButton.addEventListener('click', function() {
-                // 添加过渡类
-                helpPage.classList.add('hidden');
-                helpPage.classList.remove('active');
-                
-                // 短暂延迟后显示主页面
-                setTimeout(function() {
-                    mainPage.classList.remove('hidden');
-                    mainPage.classList.add('active');
-                }, 50);
+                switchPage(helpPage, mainPage);
+            });
+            
+            // 点击鸣谢页面的返回按钮
+            backButtonThanks.addEventListener('click', function() {
+                switchPage(thanksPage, mainPage);
             });
         });
     </script>
