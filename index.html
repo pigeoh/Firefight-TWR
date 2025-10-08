@@ -20,7 +20,6 @@
             justify-content: center;
             align-items: center;
             padding: 20px;
-            /* 移除 overflow: hidden 允许页面滚动 */
         }
 
         .menu-container {
@@ -32,7 +31,6 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
             transition: all 0.3s ease;
             position: relative;
-            /* 移除 overflow: hidden 允许内容滚动 */
         }
 
         /* 页面切换效果 */
@@ -346,6 +344,72 @@
             font-size: 1rem;
             color: #888;
         }
+        
+        /* 介绍页面样式 */
+        .intro-page {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .intro-title {
+            padding: 1.5rem;
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            font-weight: 600;
+            color: #f0f0f0;
+            border-bottom: 2px solid #333;
+            margin-bottom: 2rem;
+            text-align: center;
+            width: 100%;
+        }
+        
+        .intro-content {
+            width: 100%;
+            max-width: 800px;
+            color: #f0f0f0;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+        
+        .theme-image-container {
+            width: 100%;
+            max-width: 800px;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+        
+        /* 主题图容器 - 1080:607比例 */
+        .theme-image {
+            width: 100%;
+            padding-top: 56.2%; /* 607/1080 ≈ 56.2% */
+            background: #333;
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .theme-image-placeholder {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #888;
+            font-size: 1.2rem;
+            text-align: center;
+            padding: 1rem;
+        }
+        
+        .image-caption {
+            text-align: center;
+            color: #888;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            font-style: italic;
+        }
 
         /* 响应式设计 */
         @media (max-width: 1024px) {
@@ -424,6 +488,10 @@
             .contributor-card {
                 max-width: 100%;
             }
+            
+            .theme-image-container {
+                max-width: 100%;
+            }
         }
 
         @media (max-width: 480px) {
@@ -453,6 +521,10 @@
                 width: 56px;
                 height: 56px;
             }
+            
+            .theme-image-placeholder {
+                font-size: 1rem;
+            }
         }
     </style>
 </head>
@@ -466,9 +538,9 @@
                 </div>
             </div>
             
-            <h1 class="menu-title">交战：冷战热斗</h1>
+            <h1 class="menu-title">Firefight: Twilight Struggle</h1>
             <ul class="nav-list">
-                <li class="nav-item"><a href="#" class="nav-link">介绍</a></li>
+                <li class="nav-item"><a href="#" class="nav-link" id="intro-link">介绍</a></li>
                 <li class="nav-item"><a href="#" class="nav-link">内容百科</a></li>
                 <li class="nav-item"><a href="#" class="nav-link" id="thanks-link">鸣谢</a></li>
                 <li class="nav-item">
@@ -535,17 +607,41 @@
                 <button class="back-button" id="back-button-thanks">返回</button>
             </div>
         </div>
+        
+        <!-- 介绍页面 -->
+        <div class="page hidden" id="intro-page">
+            <div class="intro-page">
+                <h2 class="intro-title">介绍</h2>
+                
+                <div class="intro-content">Firefight“冷战热斗”模组是游戏Firefight衍生出的一款以“冷战”为题材的游戏mod，本mod主要用于还原模拟架空冷战时期两大国与第三世界国家的各类地区冲突，在游戏中，你可以扮演中国、华约、北约、日本、韩国、越南、阿根廷、埃及、叙利亚、黎巴嫩、中国台湾、朝鲜、南斯拉夫、以色列等等（后续还会添加更多阵营）本mod内容丰富，品质优秀，平衡性良好，各类数据依据现实改编，同时本mod拥有自己的游戏机制（抗穿与抗破的区分）总之，这是一款追求真实与硬核的mod，欢迎你游玩这款mod，赶紧去体验冷战时期的甲弹对抗与步兵冲击吧。</div>
+                
+                <div class="theme-image-container">
+                    <div class="theme-image">
+                        <div class="theme-image-placeholder">
+                            <img src="https://raw.githubusercontent.com/pigeoh/Firefight-TWR/main/theme-img.png" alt="主题图" onerror="this.style.display='none'; this.parentNode.innerHTML='Theme'">
+                        </div>
+                    </div>
+                    <div class="image-caption">本次更新版号10.5.1</div>
+                </div>
+                
+                <button class="back-button" id="back-button-intro">返回</button>
+            </div>
+        </div>
     </nav>
     
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const helpButton = document.getElementById('help-button');
+            const introLink = document.getElementById('intro-link');
             const thanksLink = document.getElementById('thanks-link');
             const backButton = document.getElementById('back-button');
             const backButtonThanks = document.getElementById('back-button-thanks');
+            const backButtonIntro = document.getElementById('back-button-intro');
+            
             const mainPage = document.getElementById('main-page');
             const helpPage = document.getElementById('help-page');
             const thanksPage = document.getElementById('thanks-page');
+            const introPage = document.getElementById('intro-page');
             
             // 页面切换函数
             function switchPage(fromPage, toPage) {
@@ -563,6 +659,11 @@
                 switchPage(mainPage, helpPage);
             });
             
+            // 点击"介绍"链接
+            introLink.addEventListener('click', function() {
+                switchPage(mainPage, introPage);
+            });
+            
             // 点击"鸣谢"链接
             thanksLink.addEventListener('click', function() {
                 switchPage(mainPage, thanksPage);
@@ -576,6 +677,11 @@
             // 点击鸣谢页面的返回按钮
             backButtonThanks.addEventListener('click', function() {
                 switchPage(thanksPage, mainPage);
+            });
+            
+            // 点击介绍页面的返回按钮
+            backButtonIntro.addEventListener('click', function() {
+                switchPage(introPage, mainPage);
             });
         });
     </script>
