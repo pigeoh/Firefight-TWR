@@ -227,8 +227,8 @@
         }
         
         .help-icon {
-            width: 64px; /* 修改为64px */
-            height: 64px; /* 修改为64px */
+            width: 64px;
+            height: 64px;
             margin-bottom: 1rem;
             display: flex;
             align-items: center;
@@ -236,6 +236,15 @@
             border-radius: 50%;
             font-size: 2.5rem;
             color: white;
+        }
+        
+        .help-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: crisp-edges;
+            image-rendering: high-quality;
         }
         
         .qq-button {
@@ -338,6 +347,11 @@
             .help-button {
                 padding: 1.5rem;
             }
+            
+            .help-icon {
+                width: 60px;
+                height: 60px;
+            }
         }
 
         @media (max-width: 480px) {
@@ -364,9 +378,8 @@
             }
             
             .help-icon {
-                width: 60px;
-                height: 60px;
-                font-size: 2rem;
+                width: 56px;
+                height: 56px;
             }
         }
     </style>
@@ -401,7 +414,7 @@
                     <a href="https://qun.qq.com/universal-share/share?ac=1&authKey=htl9ZMJOxDI3UZ05gbbiG2%2BjqosCkZRdWUrsSRKtRwWeIbxrkRZ4%2FsMgzYPdklJu&busi_data=eyJncm91cENvZGUiOiI3NjczOTA5MTQiLCJ0b2tlbiI6InZEajQ3NlZ1UDJzZ24weGhSeWcvN2ozajU1MjJOTWdyU0daaHYybHJ5TWZ2NlBUei83K0tIaVYzWGo3VVFHaFUiLCJ1aW4iOiIxNjg0NzgxNDEifQ%3D%3D&data=rrTbqqkhWN_2d723UHIhrUcCpgVwdevfTUJwzuois1IKTOlbnVnrhAvCOLZ_IcklUEl4lf0eJyOxbVr1M84LEg&svctype=4&tempid=h5_group_info" 
                        class="help-button qq-button" target="_blank">
                         <div class="help-icon" style="background: #12b7f5;">
-                            <img src="https://raw.githubusercontent.com/pigeoh/Firefight-TWR/main/icon-qq.png" alt="icon_qq" onerror="this.style.display='none'; this.parentNode.innerHTML='图标加载失败'">
+                            <img src="https://raw.githubusercontent.com/pigeoh/Firefight-TWR/main/icon-qq.png" alt="QQ图标" onerror="this.style.display='none'; this.parentNode.innerHTML='QQ'">
                         </div>
                         <div class="button-title">QQ群</div>
                         <div class="button-desc">加入我们的QQ群获取帮助</div>
@@ -410,7 +423,7 @@
                     <a href="https://discord.com/channels/1007568260918693959/1209175441420722186" 
                        class="help-button discord-button" target="_blank">
                         <div class="help-icon" style="background: #5865f2;">
-                            <img src="https://raw.githubusercontent.com/pigeoh/Firefight-TWR/main/icon-discord.png" alt="icon_dc" onerror="this.style.display='none'; this.parentNode.innerHTML='图标加载失败'">
+                            <img src="https://raw.githubusercontent.com/pigeoh/Firefight-TWR/main/icon-discord.png" alt="Discord图标" onerror="this.style.display='none'; this.parentNode.innerHTML='Discord'">
                         </div>
                         <div class="button-title">Discord</div>
                         <div class="button-desc">加入我们的Discord服务器</div>
