@@ -405,6 +405,63 @@
             font-style: italic;
         }
 
+        /* 下载页面样式 */
+        .download-page {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .download-title {
+            padding: 1.5rem;
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            font-weight: 600;
+            color: #f0f0f0;
+            border-bottom: 2px solid #333;
+            margin-bottom: 2rem;
+            text-align: center;
+            width: 100%;
+        }
+        
+        .declaration {
+            width: 100%;
+            max-width: 800px;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        
+        .declaration-title {
+            color: #ff0000; /* 红色标题 */
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        
+        .declaration-content {
+            color: #888; /* 灰色内容 */
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+        
+        .apk-download-btn {
+            background: #b30000;
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 25px;
+            text-decoration: none;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            display: inline-block;
+            margin-bottom: 2rem;
+        }
+        
+        .apk-download-btn:hover {
+            background: #c40000;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(179, 0, 0, 0.4);
+        }
+
         /* 响应式设计 */
         @media (max-width: 1024px) {
             .menu-container {
@@ -515,6 +572,10 @@
                 width: 56px;
                 height: 56px;
             }
+            
+            .theme-image-placeholder {
+                font-size: 1rem;
+            }
         }
     </style>
 </head>
@@ -533,6 +594,7 @@
                 <li class="nav-item"><a href="#" class="nav-link" id="intro-link">介绍</a></li>
                 <li class="nav-item"><a href="#" class="nav-link">内容百科</a></li>
                 <li class="nav-item"><a href="#" class="nav-link" id="thanks-link">鸣谢</a></li>
+                <li class="nav-item"><a href="#" class="nav-link" id="download-link">下载</a></li>
                 <li class="nav-item">
                     <button class="nav-link download-btn" id="help-button">获取帮助？</button>
                 </li>
@@ -617,6 +679,26 @@
                 <button class="back-button" id="back-button-intro">返回</button>
             </div>
         </div>
+        
+        <!-- 下载页面 -->
+        <div class="page hidden" id="download-page">
+            <div class="download-page">
+                <h2 class="download-title">下载</h2>
+                
+                <div class="declaration">
+                    <div class="declaration-title">重要声明</div>
+                    <div class="declaration-content">
+                        本模组仅供内部学习交流，！！！绝对禁止！！！在非官方渠道（非官方的Discord帖子，非官方的QQ群聊，非官方的网站网页，未经授权发布的应用市场）传播本模组。拒绝盗版，拒绝改版，从我做起。希望大家支持正版，支持创作者。
+                    </div>
+                </div>
+                
+                <a href="https://raw.githubusercontent.com/pigeoh/Firefight-TWR/main/main.apk" class="apk-download-btn" download>
+                    下载APK文件
+                </a>
+                
+                <button class="back-button" id="back-button-download">返回</button>
+            </div>
+        </div>
     </nav>
     
     <script>
@@ -624,14 +706,17 @@
             const helpButton = document.getElementById('help-button');
             const introLink = document.getElementById('intro-link');
             const thanksLink = document.getElementById('thanks-link');
+            const downloadLink = document.getElementById('download-link');
             const backButton = document.getElementById('back-button');
             const backButtonThanks = document.getElementById('back-button-thanks');
             const backButtonIntro = document.getElementById('back-button-intro');
+            const backButtonDownload = document.getElementById('back-button-download');
             
             const mainPage = document.getElementById('main-page');
             const helpPage = document.getElementById('help-page');
             const thanksPage = document.getElementById('thanks-page');
             const introPage = document.getElementById('intro-page');
+            const downloadPage = document.getElementById('download-page');
             
             // 页面切换函数
             function switchPage(fromPage, toPage) {
@@ -659,6 +744,11 @@
                 switchPage(mainPage, thanksPage);
             });
             
+            // 点击"下载"链接
+            downloadLink.addEventListener('click', function() {
+                switchPage(mainPage, downloadPage);
+            });
+            
             // 点击帮助页面的返回按钮
             backButton.addEventListener('click', function() {
                 switchPage(helpPage, mainPage);
@@ -672,6 +762,11 @@
             // 点击介绍页面的返回按钮
             backButtonIntro.addEventListener('click', function() {
                 switchPage(introPage, mainPage);
+            });
+            
+            // 点击下载页面的返回按钮
+            backButtonDownload.addEventListener('click', function() {
+                switchPage(downloadPage, mainPage);
             });
         });
     </script>
