@@ -171,7 +171,7 @@
         }
 
         .download-btn:hover {
-            transform: translateY(-3px) scale(1.05);
+            transform: translateY(-3px);
             box-shadow: 0 8px 20px rgba(179, 0, 0, 0.5);
         }
 
@@ -220,7 +220,6 @@
         }
         
         .help-button:hover {
-            transform: translateY(-5px);
             box-shadow: 0 10px 25px rgba(0,0,0,0.3);
         }
         
@@ -237,12 +236,9 @@
         }
         
         .help-icon img {
-            width: 100%;
-            height: 100%;
+            max-width: 100%;
+            max-height: 100%;
             object-fit: contain;
-            image-rendering: -webkit-optimize-contrast;
-            image-rendering: crisp-edges;
-            image-rendering: high-quality;
         }
         
         .qq-button {
@@ -279,7 +275,6 @@
         
         .back-button:hover {
             background: #444;
-            transform: translateY(-2px);
         }
 
         /* 鸣谢页面样式 */
@@ -329,7 +324,6 @@
         }
         
         .contributor-card:hover {
-            transform: translateY(-3px);
             background: #333;
         }
         
@@ -378,21 +372,16 @@
             position: relative;
         }
         
-        /* 主题图容器 - 1080:607比例 */
+        /* 主题图容器 */
         .theme-image {
             width: 100%;
-            padding-top: 100%;            background: #333;
+            background: #333;
             border-radius: 8px;
             overflow: hidden;
             position: relative;
         }
         
         .theme-image-placeholder {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -400,6 +389,12 @@
             font-size: 1.2rem;
             text-align: center;
             padding: 1rem;
+        }
+        
+        .theme-image-placeholder img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
         }
         
         .image-caption {
@@ -520,10 +515,6 @@
                 width: 56px;
                 height: 56px;
             }
-            
-            .theme-image-placeholder {
-                font-size: 1rem;
-            }
         }
     </style>
 </head>
@@ -612,7 +603,7 @@
             <div class="intro-page">
                 <h2 class="intro-title">介绍</h2>
                 
-                <div class="intro-content">Firefight“冷战热斗”模组是游戏Firefight衍生出的一款以“冷战”为题材的游戏mod，本mod主要用于还原模拟架空冷战时期两大国与第三世界国家的各类地区冲突，在游戏中，你可以扮演中国、华约、北约、日本、韩国、越南、阿根廷、埃及、叙利亚、黎巴嫩、中国台湾、朝鲜、南斯拉夫、以色列等等（后续还会添加更多阵营）本mod内容丰富，品质优秀，平衡性良好，各类数据依据现实改编，同时本mod拥有自己的游戏机制（抗穿与抗破的区分）总之，这是一款追求真实与硬核的mod，欢迎你游玩这款mod，赶紧去体验冷战时期的甲弹对抗与步兵冲击吧。</div>
+                <div class="intro-content">Firefight"冷战热斗"模组是游戏Firefight衍生出的一款以"冷战"为题材的游戏mod，本mod主要用于还原模拟架空冷战时期两大国与第三世界国家的各类地区冲突，在游戏中，你可以扮演中国、华约、北约、日本、韩国、越南、阿根廷、埃及、叙利亚、黎巴嫩、中国台湾、朝鲜、南斯拉夫、以色列等等（后续还会添加更多阵营）本mod内容丰富，品质优秀，平衡性良好，各类数据依据现实改编，同时本mod拥有自己的游戏机制（抗穿与抗破的区分）总之，这是一款追求真实与硬核的mod，欢迎你游玩这款mod，赶紧去体验冷战时期的甲弹对抗与步兵冲击吧。</div>
                 
                 <div class="theme-image-container">
                     <div class="theme-image">
