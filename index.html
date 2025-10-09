@@ -837,12 +837,13 @@
         });
     }
 
-    // 应用本地化文本
+    // 应用本地化文本（修复按钮问题）
     function applyLocalization(localeData) {
       document.querySelectorAll('[data-locale-key]').forEach(element => {
         const key = element.getAttribute('data-locale-key');
         if (localeData[key]) {
-          if (element.tagName === 'INPUT' || element.tagName === 'BUTTON') {
+          // 输入型按钮（input[type=button]等）用value，其他元素用textContent
+          if (element.tagName === 'INPUT') {
             element.value = localeData[key];
           } else {
             element.textContent = localeData[key];
