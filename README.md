@@ -1,2 +1,2 @@
 # Firefight-TWR
-NOT ME, JUST FOR A TEAM!
+Not me, for a team.
