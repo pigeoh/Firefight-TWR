@@ -1,772 +1,889 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Firefight: Twilight-Struggle</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', system-ui;
-            -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-        }
-
-        body {
-            background: #121212;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Firefight: Twilight-Struggle</title>
+  <style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Segoe UI', system-ui;
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    }
+    
+    body {
+        background: #121212;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+    }
+    
+    .menu-container {
+        width: 100%;
+        max-width: 1200px;
+        padding: 2rem;
+        background: #1e1e1e;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        transition: all 0.3s ease;
+        position: relative;
+    }
+    
+    /* 页面切换效果 */
+    .page {
+        transition: transform 0.5s ease, opacity 0.5s ease;
+        width: 100%;
+    }
+    
+    .page.hidden {
+        transform: translateX(-100%);
+        opacity: 0;
+        position: absolute;
+        top: 0;
+        left: 0;
+        pointer-events: none;
+    }
+    
+    .page.active {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    
+    /* 图标容器样式 */
+    .icon-container {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 2rem;
+    }
+    
+    .icon-placeholder {
+        width: 200px;
+        height: 200px;
+        background: #333;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #888;
+        font-size: 1rem;
+        text-align: center;
+        padding: 1rem;
+        overflow: hidden;
+    }
+    
+    .icon-placeholder img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+    }
+    
+    .menu-title {
+        padding: 1.5rem;
+        font-size: clamp(1.5rem, 4vw, 2.5rem);
+        font-weight: 600;
+        color: #f0f0f0;
+        border-bottom: 2px solid #333;
+        margin-bottom: 2rem;
+        text-align: center;
+        transition: font-size 0.3s;
+    }
+    
+    /* 主页面主题图区域 */
+    .main-theme-container {
+        width: 100%;
+        max-width: 800px;
+        margin: 0 auto 2rem;
+    }
+    
+    .main-theme-image {
+        width: 100%;
+        background: #333;
+        border-radius: 8px;
+        overflow: hidden;
+        margin-bottom: 1rem;
+    }
+    
+    .main-theme-image img {
+        width: 100%;
+        height: auto;
+        display: block;
+    }
+    
+    .main-image-caption {
+        text-align: center;
+        color: #888;
+        font-size: 0.9rem;
+        margin-bottom: 1.5rem;
+        font-style: italic;
+    }
+    
+    /* 更新内容面板 */
+    .update-panel {
+        background: linear-gradient(145deg, #2a2a2a, #1f1f1f);
+        border-radius: 10px;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+        border: 1px solid #444;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .update-panel::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 4px;
+        height: 100%;
+        background: #b30000;
+    }
+    
+    .update-title {
+        color: #f0f0f0;
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        text-align: center;
+        position: relative;
+    }
+    
+    .update-title::after {
+        content: '';
+        display: block;
+        width: 50px;
+        height: 2px;
+        background: #b30000;
+        margin: 0.5rem auto;
+    }
+    
+    .update-content {
+        color: #d0d0d0;
+        line-height: 1.6;
+        font-size: 1.05rem;
+    }
+    
+    .update-highlight {
+        color: #ff9900;
+        font-weight: 600;
+    }
+    
+    .nav-list {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        list-style: none;
+        gap: 1.5rem;
+        padding: 0 1rem;
+    }
+    
+    .nav-item {
+        position: relative;
+        transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        flex: 1 0 auto;
+        max-width: 300px;
+    }
+    
+    .nav-link {
+        text-decoration: none;
+        color: #f0f0f0;
+        padding: 1rem;
+        border-radius: 6px;
+        position: relative;
+        overflow: hidden;
+        transition: transform 0.25s, background 0.3s;
+        display: block;
+        text-align: center;
+        font-size: clamp(1rem, 2vw, 1.2rem);
+        background: #2a2a2a;
+    }
+    
+    .nav-link::after {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 2px;
+        background: #ff0000;
+        bottom: 0;
+        left: 0;
+        transition: width 0.3s ease;
+    }
+    
+    .nav-link:hover {
+        transform: translateY(-3px);
+        background: #333;
+    }
+    
+    .nav-link:hover::after {
+        width: 100%;
+    }
+    
+    /* 下载按钮动画 */
+    .download-btn {
+        background: #b30000;
+        color: white;
+        padding: 1rem 2rem;
+        border-radius: 25px;
+        transition: transform 0.3s, box-shadow 0.3s;
+        font-size: clamp(1rem, 2vw, 1.2rem);
+        display: block;
+        margin: 2rem auto 0;
+        max-width: 300px;
+        text-decoration: none;
+        text-align: center;
+        cursor: pointer;
+        border: none;
+    }
+    
+    .download-btn::after {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 2px;
+        background: #ff0000;
+        bottom: 0;
+        left: 0;
+        transition: width 0.3s ease;
+    }
+    
+    .download-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(179, 0, 0, 0.5);
+    }
+    
+    .download-btn:hover::after {
+        width: 100%;
+    }
+    
+    /* 第二页样式 */
+    .help-page {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .help-title {
+        padding: 1.5rem;
+        font-size: clamp(1.5rem, 4vw, 2.5rem);
+        font-weight: 600;
+        color: #f0f0f0;
+        border-bottom: 2px solid #333;
+        margin-bottom: 2rem;
+        text-align: center;
+        width: 100%;
+    }
+    
+    .help-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 2rem;
+        width: 100%;
+        margin-top: 1rem;
+    }
+    
+    .help-button {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-decoration: none;
+        padding: 2rem;
+        border-radius: 12px;
+        transition: all 0.3s ease;
+        max-width: 300px;
+        width: 100%;
+        text-align: center;
+    }
+    
+    .help-button:hover {
+        box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    }
+    
+    .help-icon {
+        width: 64px;
+        height: 64px;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        font-size: 2.5rem;
+        color: white;
+    }
+    
+    .help-icon img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+    }
+    
+    .qq-button {
+        background: #12b7f5;
+    }
+    
+    .discord-button {
+        background: #5865f2;
+    }
+    
+    .button-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        color: white;
+    }
+    
+    .button-desc {
+        font-size: 1rem;
+        color: rgba(255,255,255,0.8);
+    }
+    
+    .back-button {
+        background: #333;
+        color: white;
+        border: none;
+        padding: 0.8rem 1.5rem;
+        border-radius: 25px;
+        margin-top: 2rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 1rem;
+    }
+    
+    .back-button:hover {
+        background: #444;
+    }
+    
+    /* 鸣谢页面样式 */
+    .thanks-page {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .thanks-title {
+        padding: 1.5rem;
+        font-size: clamp(1.5rem, 4vw, 2.5rem);
+        font-weight: 600;
+        color: #f0f0f0;
+        border-bottom: 2px solid #333;
+        margin-bottom: 2rem;
+        text-align: center;
+        width: 100%;
+    }
+    
+    .thanks-content {
+        width: 100%;
+        max-width: 800px;
+        text-align: center;
+        margin-bottom: 2rem;
+        color: #f0f0f0;
+        line-height: 1.6;
+    }
+    
+    .contributors {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1.5rem;
+        width: 100%;
+        margin-top: 1rem;
+    }
+    
+    .contributor-card {
+        background: #2a2a2a;
+        border-radius: 8px;
+        padding: 1.5rem;
+        width: 100%;
+        max-width: 250px;
+        text-align: center;
+        transition: transform 0.3s ease, background 0.3s;
+    }
+    
+    .contributor-card:hover {
+        background: #333;
+    }
+    
+    .contributor-name {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: #f0f0f0;
+        margin-bottom: 0.5rem;
+    }
+    
+    .contributor-role {
+        font-size: 1rem;
+        color: #888;
+    }
+    
+    /* 介绍页面样式 */
+    .intro-page {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .intro-title {
+        padding: 1.5rem;
+        font-size: clamp(1.5rem, 4vw, 2.5rem);
+        font-weight: 600;
+        color: #f0f0f0;
+        border-bottom: 2px solid #333;
+        margin-bottom: 2rem;
+        text-align: center;
+        width: 100%;
+    }
+    
+    .intro-content {
+        width: 100%;
+        max-width: 800px;
+        color: #f0f0f0;
+        line-height: 1.6;
+        margin-bottom: 2rem;
+    }
+    
+    .theme-image-container {
+        width: 100%;
+        max-width: 800px;
+        margin-bottom: 1.5rem;
+        position: relative;
+    }
+    
+    .theme-image {
+        width: 100%;
+        background: #333;
+        border-radius: 8px;
+        overflow: hidden;
+        position: relative;
+    }
+    
+    .theme-image-placeholder {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #888;
+        font-size: 1.2rem;
+        text-align: center;
+        padding: 1rem;
+    }
+    
+    .theme-image-placeholder img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+    }
+    
+    .image-caption {
+        text-align: center;
+        color: #888;
+        font-size: 0.9rem;
+        margin-top: 0.5rem;
+        font-style: italic;
+    }
+    
+    /* 下载页面样式 */
+    .download-page {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .download-title {
+        padding: 1.5rem;
+        font-size: clamp(1.5rem, 4vw, 2.5rem);
+        font-weight: 600;
+        color: #f0f0f0;
+        border-bottom: 2px solid #333;
+        margin-bottom: 2rem;
+        text-align: center;
+        width: 100%;
+    }
+    
+    .declaration {
+        width: 100%;
+        max-width: 800px;
+        margin-bottom: 2rem;
+        text-align: center;
+    }
+    
+    .declaration-title {
+        color: #ff0000;
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+    }
+    
+    .declaration-content {
+        color: #888;
+        font-size: 1rem;
+        line-height: 1.6;
+        margin-bottom: 2rem;
+    }
+    
+    .apk-download-btn {
+        background: #b30000;
+        color: white;
+        padding: 1rem 2rem;
+        border-radius: 25px;
+        text-decoration: none;
+        font-size: 1.2rem;
+        transition: all 0.3s ease;
+        display: inline-block;
+        margin-bottom: 2rem;
+    }
+    
+    .apk-download-btn:hover {
+        background: #c40000;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(179, 0, 0, 0.4);
+    }
+    
+    /* 响应式设计 */
+    @media (max-width: 1024px) {
         .menu-container {
-            width: 100%;
-            max-width: 1200px;
-            padding: 2rem;
-            background: #1e1e1e;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        /* 页面切换效果 */
-        .page {
-            transition: transform 0.5s ease, opacity 0.5s ease;
-            width: 100%;
-        }
-        
-        .page.hidden {
-            transform: translateX(-100%);
-            opacity: 0;
-            position: absolute;
-            top: 0;
-            left: 0;
-            pointer-events: none;
-        }
-        
-        .page.active {
-            transform: translateX(0);
-            opacity: 1;
-        }
-
-        /* 图标容器样式 */
-        .icon-container {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 2rem;
-        }
-
-        .icon-placeholder {
-            width: 200px;
-            height: 200px;
-            background: #333;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #888;
-            font-size: 1rem;
-            text-align: center;
-            padding: 1rem;
-            overflow: hidden;
-        }
-        
-        .icon-placeholder img {
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain;
-        }
-
-        .menu-title {
             padding: 1.5rem;
-            font-size: clamp(1.5rem, 4vw, 2.5rem);
-            font-weight: 600;
-            color: #f0f0f0;
-            border-bottom: 2px solid #333;
-            margin-bottom: 2rem;
-            text-align: center;
-            transition: font-size 0.3s;
         }
-
+        
         .nav-list {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            list-style: none;
-            gap: 1.5rem;
-            padding: 0 1rem;
-        }
-
-        .nav-item {
-            position: relative;
-            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            flex: 1 0 auto;
-            max-width: 300px;
-        }
-
-        .nav-link {
-            text-decoration: none;
-            color: #f0f0f0;
-            padding: 1rem;
-            border-radius: 6px;
-            position: relative;
-            overflow: hidden;
-            transition: transform 0.25s, background 0.3s;
-            display: block;
-            text-align: center;
-            font-size: clamp(1rem, 2vw, 1.2rem);
-            background: #2a2a2a;
-        }
-
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            background: #ff0000; /* 红色下划线 */
-            bottom: 0;
-            left: 0;
-            transition: width 0.3s ease;
-        }
-
-        .nav-link:hover {
-            transform: translateY(-3px);
-            background: #333;
-        }
-
-        .nav-link:hover::after {
-            width: 100%;
-        }
-
-        /* 下载按钮动画 */
-        .download-btn {
-            background: #b30000; /* 深红色按钮 */
-            color: white;
-            padding: 1rem 2rem;
-            border-radius: 25px;
-            transition: transform 0.3s, box-shadow 0.3s;
-            font-size: clamp(1rem, 2vw, 1.2rem);
-            display: block;
-            margin: 2rem auto 0;
-            max-width: 300px;
-            text-decoration: none;
-            text-align: center;
-            cursor: pointer;
-            border: none;
-        }
-
-        .download-btn::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            background: #ff0000; /* 红色下划线 */
-            bottom: 0;
-            left: 0;
-            transition: width 0.3s ease;
-        }
-
-        .download-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(179, 0, 0, 0.5);
-        }
-
-        .download-btn:hover::after {
-            width: 100%;
-        }
-
-        /* 第二页样式 */
-        .help-page {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            gap: 1.2rem;
         }
         
-        .help-title {
-            padding: 1.5rem;
-            font-size: clamp(1.5rem, 4vw, 2.5rem);
-            font-weight: 600;
-            color: #f0f0f0;
-            border-bottom: 2px solid #333;
-            margin-bottom: 2rem;
-            text-align: center;
-            width: 100%;
+        .nav-item {
+            max-width: 250px;
+        }
+        
+        .icon-placeholder {
+            width: 180px;
+            height: 180px;
         }
         
         .help-buttons {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 2rem;
-            width: 100%;
-            margin-top: 1rem;
-        }
-        
-        .help-button {
-            display: flex;
             flex-direction: column;
             align-items: center;
-            text-decoration: none;
-            padding: 2rem;
-            border-radius: 12px;
-            transition: all 0.3s ease;
-            max-width: 300px;
-            width: 100%;
-            text-align: center;
-        }
-        
-        .help-button:hover {
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-        }
-        
-        .help-icon {
-            width: 64px;
-            height: 64px;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            font-size: 2.5rem;
-            color: white;
-        }
-        
-        .help-icon img {
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain;
-        }
-        
-        .qq-button {
-            background: #12b7f5; /* QQ主题色 */
-        }
-        
-        .discord-button {
-            background: #5865f2; /* Discord主题色 */
-        }
-        
-        .button-title {
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            color: white;
-        }
-        
-        .button-desc {
-            font-size: 1rem;
-            color: rgba(255,255,255,0.8);
-        }
-        
-        .back-button {
-            background: #333;
-            color: white;
-            border: none;
-            padding: 0.8rem 1.5rem;
-            border-radius: 25px;
-            margin-top: 2rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 1rem;
-        }
-        
-        .back-button:hover {
-            background: #444;
-        }
-
-        /* 鸣谢页面样式 */
-        .thanks-page {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        
-        .thanks-title {
-            padding: 1.5rem;
-            font-size: clamp(1.5rem, 4vw, 2.5rem);
-            font-weight: 600;
-            color: #f0f0f0;
-            border-bottom: 2px solid #333;
-            margin-bottom: 2rem;
-            text-align: center;
-            width: 100%;
-        }
-        
-        .thanks-content {
-            width: 100%;
-            max-width: 800px;
-            text-align: center;
-            margin-bottom: 2rem;
-            color: #f0f0f0;
-            line-height: 1.6;
         }
         
         .contributors {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .menu-container {
+            padding: 1.2rem;
+            border-radius: 8px;
+        }
+        
+        .menu-title {
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .nav-list {
+            flex-direction: column;
             gap: 1.5rem;
             width: 100%;
-            margin-top: 1rem;
+        }
+        
+        .nav-item {
+            max-width: 100%;
+        }
+        
+        .nav-link {
+            padding: 1.2rem;
+        }
+        
+        .download-btn {
+            margin-top: 1.5rem;
+            padding: 1.2rem;
+        }
+        
+        .icon-placeholder {
+            width: 150px;
+            height: 150px;
+        }
+        
+        .help-button {
+            padding: 1.5rem;
+        }
+        
+        .help-icon {
+            width: 60px;
+            height: 60px;
         }
         
         .contributor-card {
-            background: #2a2a2a;
-            border-radius: 8px;
-            padding: 1.5rem;
-            width: 100%;
-            max-width: 250px;
-            text-align: center;
-            transition: transform 0.3s ease, background 0.3s;
-        }
-        
-        .contributor-card:hover {
-            background: #333;
-        }
-        
-        .contributor-name {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: #f0f0f0;
-            margin-bottom: 0.5rem;
-        }
-        
-        .contributor-role {
-            font-size: 1rem;
-            color: #888;
-        }
-        
-        /* 介绍页面样式 */
-        .intro-page {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        
-        .intro-title {
-            padding: 1.5rem;
-            font-size: clamp(1.5rem, 4vw, 2.5rem);
-            font-weight: 600;
-            color: #f0f0f0;
-            border-bottom: 2px solid #333;
-            margin-bottom: 2rem;
-            text-align: center;
-            width: 100%;
-        }
-        
-        .intro-content {
-            width: 100%;
-            max-width: 800px;
-            color: #f0f0f0;
-            line-height: 1.6;
-            margin-bottom: 2rem;
+            max-width: 100%;
         }
         
         .theme-image-container {
-            width: 100%;
-            max-width: 800px;
-            margin-bottom: 1.5rem;
-            position: relative;
+            max-width: 100%;
         }
         
-        /* 主题图容器 */
-        .theme-image {
-            width: 100%;
-            background: #333;
-            border-radius: 8px;
-            overflow: hidden;
-            position: relative;
-        }
-        
-        .theme-image-placeholder {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #888;
-            font-size: 1.2rem;
-            text-align: center;
+        .update-panel {
             padding: 1rem;
         }
         
-        .theme-image-placeholder img {
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain;
+        .update-title {
+            font-size: 1.3rem;
         }
-        
-        .image-caption {
-            text-align: center;
-            color: #888;
-            font-size: 0.9rem;
-            margin-top: 0.5rem;
-            font-style: italic;
-        }
-
-        /* 下载页面样式 */
-        .download-page {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        
-        .download-title {
-            padding: 1.5rem;
-            font-size: clamp(1.5rem, 4vw, 2.5rem);
-            font-weight: 600;
-            color: #f0f0f0;
-            border-bottom: 2px solid #333;
-            margin-bottom: 2rem;
-            text-align: center;
-            width: 100%;
-        }
-        
-        .declaration {
-            width: 100%;
-            max-width: 800px;
-            margin-bottom: 2rem;
-            text-align: center;
-        }
-        
-        .declaration-title {
-            color: #ff0000; /* 红色标题 */
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-        }
-        
-        .declaration-content {
-            color: #888; /* 灰色内容 */
-            font-size: 1rem;
-            line-height: 1.6;
-            margin-bottom: 2rem;
-        }
-        
-        .apk-download-btn {
-            background: #b30000;
-            color: white;
-            padding: 1rem 2rem;
-            border-radius: 25px;
-            text-decoration: none;
-            font-size: 1.2rem;
-            transition: all 0.3s ease;
-            display: inline-block;
-            margin-bottom: 2rem;
-        }
-        
-        .apk-download-btn:hover {
-            background: #c40000;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(179, 0, 0, 0.4);
-        }
-
-        /* 响应式设计 */
-        @media (max-width: 1024px) {
-            .menu-container {
-                padding: 1.5rem;
-            }
-            
-            .nav-list {
-                gap: 1.2rem;
-            }
-            
-            .nav-item {
-                max-width: 250px;
-            }
-            
-            .icon-placeholder {
-                width: 180px;
-                height: 180px;
-            }
-            
-            .help-buttons {
-                flex-direction: column;
-                align-items: center;
-            }
-            
-            .contributors {
-                flex-direction: column;
-                align-items: center;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .menu-container {
-                padding: 1.2rem;
-                border-radius: 8px;
-            }
-            
-            .menu-title {
-                padding: 1rem;
-                margin-bottom: 1.5rem;
-            }
-            
-            .nav-list {
-                flex-direction: column;
-                gap: 1.5rem;
-                width: 100%;
-            }
-            
-            .nav-item {
-                max-width: 100%;
-            }
-            
-            .nav-link {
-                padding: 1.2rem;
-            }
-            
-            .download-btn {
-                margin-top: 1.5rem;
-                padding: 1.2rem;
-            }
-            
-            .icon-placeholder {
-                width: 150px;
-                height: 150px;
-            }
-            
-            .help-button {
-                padding: 1.5rem;
-            }
-            
-            .help-icon {
-                width: 60px;
-                height: 60px;
-            }
-            
-            .contributor-card {
-                max-width: 100%;
-            }
-            
-            .theme-image-container {
-                max-width: 100%;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .menu-container {
-                padding: 1rem;
-            }
-            
-            .nav-link {
-                padding: 1rem;
-            }
-            
-            .download-btn {
-                padding: 1rem;
-            }
-            
-            .icon-placeholder {
-                width: 120px;
-                height: 120px;
-                font-size: 0.8rem;
-            }
-            
-            .help-button {
-                padding: 1rem;
-            }
-            
-            .help-icon {
-                width: 56px;
-                height: 56px;
-            }
-            
-            .theme-image-placeholder {
-                font-size: 1rem;
-            }
-        }
-    </style>
-</head>
-<body>
-    <nav class="menu-container">
-        <!-- 主页面 -->
-        <div class="page active" id="main-page">
-            <div class="icon-container">
-                <div class="icon-placeholder">
-                    <img src="https://raw.githubusercontent.com/pigeoh/Firefight-TWR/main/icon.png" alt="icon" onerror="this.style.display='none'; this.parentNode.innerHTML='图标加载失败'">
-                </div>
-            </div>
-            
-            <h1 class="menu-title">Firefight: Twilight Struggle</h1>
-            <ul class="nav-list">
-                <li class="nav-item"><a href="#" class="nav-link" id="intro-link">介绍</a></li>
-                <li class="nav-item"><a href="#" class="nav-link">内容百科</a></li>
-                <li class="nav-item"><a href="#" class="nav-link" id="thanks-link">鸣谢</a></li>
-                <li class="nav-item"><a href="#" class="nav-link" id="download-link">下载</a></li>
-                <li class="nav-item">
-                    <button class="nav-link download-btn" id="help-button">获取帮助？</button>
-                </li>
-            </ul>
-        </div>
-        
-        <!-- 帮助页面 -->
-        <div class="page hidden" id="help-page">
-            <div class="help-page">
-                <h2 class="help-title">获取帮助</h2>
-                
-                <div class="help-buttons">
-                    <a href="https://qun.qq.com/universal-share/share?ac=1&authKey=htl9ZMJOxDI3UZ05gbbiG2%2BjqosCkZRdWUrsSRKtRwWeIbxrkRZ4%2FsMgzYPdklJu&busi_data=eyJncm91cENvZGUiOiI3NjczOTA5MTQiLCJ0b2tlbiI6InZEajQ3NlZ1UDJzZ24weGhSeWcvN2ozajU1MjJOTWdyU0daaHYybHJ5TWZ2NlBUei83K0tIaVYzWGo3VVFHaFUiLCJ1aW4iOiIxNjg0NzgxNDEifQ%3D%3D&data=rrTbqqkhWN_2d723UHIhrUcCpgVwdevfTUJwzuois1IKTOlbnVnrhAvCOLZ_IcklUEl4lf0eJyOxbVr1M84LEg&svctype=4&tempid=h5_group_info" 
-                       class="help-button qq-button" target="_blank">
-                        <div class="help-icon" style="background: #12b7f5;">
-                            <img src="https://raw.githubusercontent.com/pigeoh/Firefight-TWR/main/icon-qq.png" alt="QQ图标" onerror="this.style.display='none'; this.parentNode.innerHTML='QQ'">
-                        </div>
-                        <div class="button-title">QQ群</div>
-                        <div class="button-desc">加入我们的QQ群获取帮助</div>
-                    </a>
-                    
-                    <a href="https://discord.com/channels/1007568260918693959/1209175441420722186" 
-                       class="help-button discord-button" target="_blank">
-                        <div class="help-icon" style="background: #5865f2;">
-                            <img src="https://raw.githubusercontent.com/pigeoh/Firefight-TWR/main/icon-discord.png" alt="Discord图标" onerror="this.style.display='none'; this.parentNode.innerHTML='Discord'">
-                        </div>
-                        <div class="button-title">Discord</div>
-                        <div class="button-desc">关注我们的Discord帖子</div>
-                    </a>
-                </div>
-                
-                <button class="back-button" id="back-button">返回</button>
-            </div>
-        </div>
-        
-        <!-- 鸣谢页面 -->
-        <div class="page hidden" id="thanks-page">
-            <div class="thanks-page">
-                <h2 class="thanks-title">鸣谢</h2>
-                
-                <div class="thanks-content">
-                    <p>感谢以下贡献者为项目付出的努力和支持：</p>
-                </div>
-                
-                <div class="contributors">
-                    <div class="contributor-card">
-                        <div class="contributor-name">Sasha Braus</div>
-                        <div class="contributor-role">项目负责人</div>
-                    </div>
-                    
-                    <div class="contributor-card">
-                        <div class="contributor-name">Wudoo</div>
-                        <div class="contributor-role">游戏代码</div>
-                    </div>
-                    
-                    <div class="contributor-card">
-                        <div class="contributor-name">你</div>
-                        <div class="contributor-role">游玩本模组</div>
-                    </div>
-                </div>
-                
-                <button class="back-button" id="back-button-thanks">返回</button>
-            </div>
-        </div>
-        
-        <!-- 介绍页面 -->
-        <div class="page hidden" id="intro-page">
-            <div class="intro-page">
-                <h2 class="intro-title">介绍</h2>
-                
-                <div class="intro-content">Firefight"冷战热斗"模组是游戏Firefight衍生出的一款以"冷战"为题材的游戏mod，本mod主要用于还原模拟架空冷战时期两大国与第三世界国家的各类地区冲突，在游戏中，你可以扮演中国、华约、北约、日本、韩国、越南、阿根廷、埃及、叙利亚、黎巴嫩、中国台湾、朝鲜、南斯拉夫、以色列等等（后续还会添加更多阵营）本mod内容丰富，品质优秀，平衡性良好，各类数据依据现实改编，同时本mod拥有自己的游戏机制（抗穿与抗破的区分）总之，这是一款追求真实与硬核的mod，欢迎你游玩这款mod，赶紧去体验冷战时期的甲弹对抗与步兵冲击吧。</div>
-                
-                <div class="theme-image-container">
-                    <div class="theme-image">
-                        <div class="theme-image-placeholder">
-                            <img src="https://raw.githubusercontent.com/pigeoh/Firefight-TWR/main/theme-img.png" alt="主题图" onerror="this.style.display='none'; this.parentNode.innerHTML='Theme'">
-                        </div>
-                    </div>
-                    <div class="image-caption">本次更新版号10.5.1</div>
-                </div>
-                
-                <button class="back-button" id="back-button-intro">返回</button>
-            </div>
-        </div>
-        
-        <!-- 下载页面 -->
-        <div class="page hidden" id="download-page">
-            <div class="download-page">
-                <h2 class="download-title">下载</h2>
-                
-                <div class="declaration">
-                    <div class="declaration-title">重要声明</div>
-                    <div class="declaration-content">
-                        本模组仅供内部学习交流，！！！绝对禁止！！！在非官方渠道（非官方的Discord帖子，非官方的QQ群聊，非官方的网站网页，未经授权发布的应用市场）传播本模组。拒绝盗版，拒绝改版，从我做起。希望大家支持正版，支持创作者。
-                    </div>
-                </div>
-                
-                <a href="https://drive.google.com/uc?export=download&id=1BdmDu3xAWDIEgdkMDicsWWbC7Yn_dJyX" class="download-button">下载 APK</a>
-                
-                <button class="back-button" id="back-button-download">返回</button>
-            </div>
-        </div>
-    </nav>
+    }
     
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const helpButton = document.getElementById('help-button');
-            const introLink = document.getElementById('intro-link');
-            const thanksLink = document.getElementById('thanks-link');
-            const downloadLink = document.getElementById('download-link');
-            const backButton = document.getElementById('back-button');
-            const backButtonThanks = document.getElementById('back-button-thanks');
-            const backButtonIntro = document.getElementById('back-button-intro');
-            const backButtonDownload = document.getElementById('back-button-download');
+    @media (max-width: 480px) {
+        .menu-container {
+            padding: 1rem;
+        }
+        
+        .nav-link {
+            padding: 1rem;
+        }
+        
+        .download-btn {
+            padding: 1rem;
+        }
+        
+        .icon-placeholder {
+            width: 120px;
+            height: 120px;
+            font-size: 0.8rem;
+        }
+        
+        .help-button {
+            padding: 1rem;
+        }
+        
+        .help-icon {
+            width: 56px;
+            height: 56px;
+        }
+        
+        .theme-image-placeholder {
+            font-size: 1rem;
+        }
+        
+        .update-panel {
+            padding: 1rem;
+        }
+        
+        .update-title {
+            font-size: 1.2rem;
+        }
+        
+        .update-content {
+            font-size: 0.95rem;
+        }
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="menu-container">
+    <!-- 主页面 -->
+    <div class="page active" id="main-page">
+      <div class="icon-container">
+        <div class="icon-placeholder">
+          <img src="https://raw.githubusercontent.com/pigeoh/Firefight-TWR/main/icon.png" alt="icon" onerror="this.style.display='none'; this.parentNode.innerHTML='图标加载失败'">
+        </div>
+      </div>
+
+      <h1 class="menu-title">Firefight: Twilight Struggle</h1>
+
+      <!-- 新增：更新内容面板 -->
+      <div class="update-panel">
+        <div class="update-title">本次更新内容</div>
+        <div class="update-content">
+          <p class="update-highlight">法老的怒吼</p>
+          <p>中东，美索不达米亚的发源地，法老的故乡，7000年来风雨飘摇。先后在巴比伦王国，亚历山大帝国，阿拉伯帝国，奥斯曼帝国中几经易手。1923年《洛桑条约》后，阿拉伯世界最终陷入分裂分裂，成为大小多个阿拉伯国家。1947年181号决议后，以色列正式合法进入阿拉伯，阿拉伯世界重回战火之中。巴勒斯坦托管地内战、中东战争、苏伊士运河危机、六日战争、黎巴嫩内战、泛阿拉伯幻梦的破灭……未来的中东，又将何去何从？无人知晓。</p>
+        </div>
+
+        <div class="main-theme-container">
+          <div class="main-theme-image">
+            <img src="https://raw.githubusercontent.com/pigeoh/Firefight-TWR/main/theme-img.png" alt="主题图" onerror="this.style.display='none'; this.parentNode.innerHTML='主题图加载失败'">
+          </div>
+          <div class="main-image-caption">本次更新版号10.5.1</div>
+        </div>
+      </div>
+
+      <ul class="nav-list">
+        <li class="nav-item"><a href="#" class="nav-link" id="intro-link">介绍</a></li>
+        <li class="nav-item"><a href="#" class="nav-link">内容百科</a></li>
+        <li class="nav-item"><a href="#" class="nav-link" id="thanks-link">鸣谢</a></li>
+        <li class="nav-item"><a href="#" class="nav-link" id="download-link">下载</a></li>
+        <li class="nav-item">
+          <button class="nav-link download-btn" id="help-button">获取帮助？</button>
+        </li>
+      </ul>
+    </div>
+
+    <!-- 帮助页面 -->
+    <div class="page hidden" id="help-page">
+      <div class="help-page">
+        <h2 class="help-title">获取帮助</h2>
+
+        <div class="help-buttons">
+          <a href="https://qun.qq.com/universal-share/share?ac=1&authKey=htl9ZMJOxDI3UZ05gbbiG2%2BjqosCkZRdWUrsSRKtRwWeIbxrkRZ4%2FsMgzYPdklJu&busi_data=eyJncm91cENvZGUiOiI3NjczOTA5MTQiLCJ0b2tlbiI6InZEajQ3NlZ1UDJzZ24weGhSeWcvN2ozajU1MjJOTWdyU0daaHYybHJ5TWZ2NlBUei83K0tIaVYzWGo3VVFHaFUiLCJ1aW4iOiIxNjg0NzgxNDEifQ%3D%3D&data=rrTbqqkhWN_2d723UHIhrUcCpgVwdevfTUJwzuois1IKTOlbnVnrhAvCOLZ_IcklUEl4lf0eJyOxbVr1M84LEg&svctype=4&tempid=h5_group_info" class="help-button qq-button" target="_blank">
+            <div class="help-icon" style="background: #12b7f5;">
+              <img src="https://raw.githubusercontent.com/pigeoh/Firefight-TWR/main/icon-qq.png" alt="QQ图标" onerror="this.style.display='none'; this.parentNode.innerHTML='QQ'">
+            </div>
+            <div class="button-title">QQ群</div>
+            <div class="button-desc">加入我们的QQ群获取帮助</div>
+          </a>
+
+          <a href="https://discord.com/channels/1007568260918693959/1209175441420722186" class="help-button discord-button" target="_blank">
+            <div class="help-icon" style="background: #5865f2;">
+              <img src="https://raw.githubusercontent.com/pigeoh/Firefight-TWR/main/icon-discord.png" alt="Discord图标" onerror="this.style.display='none'; this.parentNode.innerHTML='Discord'">
+            </div>
+            <div class="button-title">Discord</div>
+            <div class="button-desc">关注我们的Discord帖子</div>
+          </a>
+        </div>
+
+        <button class="back-button" id="back-button">返回</button>
+      </div>
+    </div>
+
+    <!-- 鸣谢页面 -->
+    <div class="page hidden" id="thanks-page">
+      <div class="thanks-page">
+        <h2 class="thanks-title">鸣谢</h2>
+
+        <div class="thanks-content">
+          <p>感谢以下贡献者为项目付出的努力和支持：</p>
+        </div>
+
+        <div class="contributors">
+          <div class="contributor-card">
+            <div class="contributor-name">Sasha Braus</div>
+            <div class="contributor-role">项目负责人</div>
+          </div>
+
+          <div class="contributor-card">
+            <div class="contributor-name">Wudoo</div>
+            <div class="contributor-role">游戏代码</div>
+          </div>
+
+          <div class="contributor-card">
+            <div class="contributor-name">你</div>
+            <div class="contributor-role">游玩本模组</div>
+          </div>
+        </div>
+
+        <button class="back-button" id="back-button-thanks">返回</button>
+      </div>
+    </div>
+
+    <!-- 介绍页面 -->
+    <div class="page hidden" id="intro-page">
+      <div class="intro-page">
+        <h2 class="intro-title">介绍</h2>
+
+        <div class="intro-content">Firefight"冷战热斗"模组是游戏Firefight衍生出的一款以"冷战"为题材的游戏mod，本mod主要用于还原模拟架空冷战时期两大国与第三世界国家的各类地区冲突，在游戏中，你可以扮演中国、华约、北约、日本、韩国、越南、阿根廷、埃及、叙利亚、黎巴嫩、中国台湾、朝鲜、南斯拉夫、以色列等等（后续还会添加更多阵营）本mod内容丰富，品质优秀，平衡性良好，各类数据依据现实改编，同时本mod拥有自己的游戏机制（抗穿与抗破的区分）总之，这是一款追求真实与硬核的mod，欢迎你游玩这款mod，赶紧去体验冷战时期的甲弹对抗与步兵冲击吧。</div>
+
+        <div class="theme-image-container">
+          <div class="theme-image">
+            <div class="theme-image-placeholder">
+              <img src="https://raw.githubusercontent.com/pigeoh/Firefight-TWR/main/theme-img.png" alt="主题图" onerror="this.style.display='none'; this.parentNode.innerHTML='Theme'">
+            </div>
+          </div>
+          <div class="image-caption">本次更新版号10.5.1</div>
+        </div>
+
+        <button class="back-button" id="back-button-intro">返回</button>
+      </div>
+    </div>
+
+    <!-- 下载页面 -->
+    <div class="page hidden" id="download-page">
+      <div class="download-page">
+        <h2 class="download-title">下载</h2>
+
+        <div class="declaration">
+          <div class="declaration-title">重要声明</div>
+          <div class="declaration-content">
+            本模组仅供内部学习交流，！！！绝对禁止！！！在非官方渠道（非官方的Discord帖子，非官方的QQ群聊，除我们的网页以外的其他未授权的网站网页，未经授权发布的应用市场）传播本模组。拒绝盗版，拒绝改版，从我做起。希望大家支持正版，支持创作者。
+          </div>
+        </div>
+
+        <a href="https://drive.google.com/uc?export=download&id=1BdmDu3xAWDIEgdkMDicsWWbC7Yn_dJyX" class="apk-download-btn">下载 APK</a>
+
+        <button class="back-button" id="back-button-download">返回</button>
+      </div>
+    </div>
+  </nav>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const helpButton = document.getElementById('help-button');
+        const introLink = document.getElementById('intro-link');
+        const thanksLink = document.getElementById('thanks-link');
+        const downloadLink = document.getElementById('download-link');
+        const backButton = document.getElementById('back-button');
+        const backButtonThanks = document.getElementById('back-button-thanks');
+        const backButtonIntro = document.getElementById('back-button-intro');
+        const backButtonDownload = document.getElementById('back-button-download');
+        
+        const mainPage = document.getElementById('main-page');
+        const helpPage = document.getElementById('help-page');
+        const thanksPage = document.getElementById('thanks-page');
+        const introPage = document.getElementById('intro-page');
+        const downloadPage = document.getElementById('download-page');
+        
+        // 页面切换函数
+        function switchPage(fromPage, toPage) {
+            fromPage.classList.add('hidden');
+            fromPage.classList.remove('active');
             
-            const mainPage = document.getElementById('main-page');
-            const helpPage = document.getElementById('help-page');
-            const thanksPage = document.getElementById('thanks-page');
-            const introPage = document.getElementById('intro-page');
-            const downloadPage = document.getElementById('download-page');
-            
-            // 页面切换函数
-            function switchPage(fromPage, toPage) {
-                fromPage.classList.add('hidden');
-                fromPage.classList.remove('active');
-                
-                setTimeout(function() {
-                    toPage.classList.remove('hidden');
-                    toPage.classList.add('active');
-                }, 50);
-            }
-            
-            // 点击"获取帮助"按钮
-            helpButton.addEventListener('click', function() {
-                switchPage(mainPage, helpPage);
-            });
-            
-            // 点击"介绍"链接
-            introLink.addEventListener('click', function() {
-                switchPage(mainPage, introPage);
-            });
-            
-            // 点击"鸣谢"链接
-            thanksLink.addEventListener('click', function() {
-                switchPage(mainPage, thanksPage);
-            });
-            
-            // 点击"下载"链接
-            downloadLink.addEventListener('click', function() {
-                switchPage(mainPage, downloadPage);
-            });
-            
-            // 点击帮助页面的返回按钮
-            backButton.addEventListener('click', function() {
-                switchPage(helpPage, mainPage);
-            });
-            
-            // 点击鸣谢页面的返回按钮
-            backButtonThanks.addEventListener('click', function() {
-                switchPage(thanksPage, mainPage);
-            });
-            
-            // 点击介绍页面的返回按钮
-            backButtonIntro.addEventListener('click', function() {
-                switchPage(introPage, mainPage);
-            });
-            
-            // 点击下载页面的返回按钮
-            backButtonDownload.addEventListener('click', function() {
-                switchPage(downloadPage, mainPage);
-            });
+            setTimeout(function() {
+                toPage.classList.remove('hidden');
+                toPage.classList.add('active');
+            }, 50);
+        }
+        
+        // 点击"获取帮助"按钮
+        helpButton.addEventListener('click', function() {
+            switchPage(mainPage, helpPage);
         });
-    </script>
+        
+        // 点击"介绍"链接
+        introLink.addEventListener('click', function() {
+            switchPage(mainPage, introPage);
+        });
+        
+        // 点击"鸣谢"链接
+        thanksLink.addEventListener('click', function() {
+            switchPage(mainPage, thanksPage);
+        });
+        
+        // 点击"下载"链接
+        downloadLink.addEventListener('click', function() {
+            switchPage(mainPage, downloadPage);
+        });
+        
+        // 点击帮助页面的返回按钮
+        backButton.addEventListener('click', function() {
+            switchPage(helpPage, mainPage);
+        });
+        
+        // 点击鸣谢页面的返回按钮
+        backButtonThanks.addEventListener('click', function() {
+            switchPage(thanksPage, mainPage);
+        });
+        
+        // 点击介绍页面的返回按钮
+        backButtonIntro.addEventListener('click', function() {
+            switchPage(introPage, mainPage);
+        });
+        
+        // 点击下载页面的返回按钮
+        backButtonDownload.addEventListener('click', function() {
+            switchPage(downloadPage, mainPage);
+        });
+    });
+  </script>
 </body>
+
 </html>
