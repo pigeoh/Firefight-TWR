@@ -686,35 +686,35 @@
     <div class="page active" id="main-page">
       <div class="icon-container">
         <div class="icon-placeholder">
-          <img src="https://raw.githubusercontent.com/pigeoh/Firefight-TWR/main/icon.png" alt="icon" onerror="this.style.display='none'; this.parentNode.innerHTML='图标加载失败'">
+          <img src="https://raw.githubusercontent.com/pigeoh/Firefight-TWR/main/icon.png" alt="icon" onerror="this.style.display='none'; this.parentNode.innerHTML='icon_load_fail'">
         </div>
       </div>
 
-      <h1 class="menu-title">Firefight: Twilight Struggle</h1>
+      <h1 class="menu-title" data-locale-key="title.main"></h1>
 
-      <!-- 新增：更新内容面板 -->
+      <!-- 更新内容面板 -->
       <div class="update-panel">
-        <div class="update-title">本次更新内容</div>
+        <div class="update-title" data-locale-key="update.title"></div>
         <div class="update-content">
-          <p class="update-highlight">法老的怒吼</p>
-          <p>中东，美索不达米亚的发源地，法老的故乡，7000年来风雨飘摇。先后在巴比伦王国，亚历山大帝国，阿拉伯帝国，奥斯曼帝国中几经易手。1923年《洛桑条约》后，阿拉伯世界最终陷入分裂分裂，成为大小多个阿拉伯国家。1947年181号决议后，以色列正式合法进入阿拉伯，阿拉伯世界重回战火之中。巴勒斯坦托管地内战、中东战争、苏伊士运河危机、六日战争、黎巴嫩内战、泛阿拉伯幻梦的破灭……未来的中东，又将何去何从？无人知晓。</p>
+          <p class="update-highlight" data-locale-key="update.highlight"></p>
+          <p data-locale-key="update.content"></p>
         </div>
 
         <div class="main-theme-container">
           <div class="main-theme-image">
-            <img src="https://raw.githubusercontent.com/pigeoh/Firefight-TWR/main/theme-img.png" alt="主题图" onerror="this.style.display='none'; this.parentNode.innerHTML='主题图加载失败'">
+            <img src="https://raw.githubusercontent.com/pigeoh/Firefight-TWR/main/theme-img.png" alt="theme_image" onerror="this.style.display='none'; this.parentNode.innerHTML='theme_load_fail'">
           </div>
-          <div class="main-image-caption">本次更新版号10.5.1</div>
+          <div class="main-image-caption" data-locale-key="update.version"></div>
         </div>
       </div>
 
       <ul class="nav-list">
-        <li class="nav-item"><a href="#" class="nav-link" id="intro-link">介绍</a></li>
-        <li class="nav-item"><a href="#" class="nav-link">内容百科</a></li>
-        <li class="nav-item"><a href="#" class="nav-link" id="thanks-link">鸣谢</a></li>
-        <li class="nav-item"><a href="#" class="nav-link" id="download-link">下载</a></li>
+        <li class="nav-item"><a href="#" class="nav-link" id="intro-link" data-locale-key="nav.intro"></a></li>
+        <li class="nav-item"><a href="#" class="nav-link" data-locale-key="nav.wiki"></a></li>
+        <li class="nav-item"><a href="#" class="nav-link" id="thanks-link" data-locale-key="nav.thanks"></a></li>
+        <li class="nav-item"><a href="#" class="nav-link" id="download-link" data-locale-key="nav.download"></a></li>
         <li class="nav-item">
-          <button class="nav-link download-btn" id="help-button">获取帮助？</button>
+          <button class="nav-link download-btn" id="help-button" data-locale-key="button.help"></button>
         </li>
       </ul>
     </div>
@@ -722,101 +722,146 @@
     <!-- 帮助页面 -->
     <div class="page hidden" id="help-page">
       <div class="help-page">
-        <h2 class="help-title">获取帮助</h2>
+        <h2 class="help-title" data-locale-key="help.title"></h2>
 
         <div class="help-buttons">
           <a href="https://qun.qq.com/universal-share/share?ac=1&authKey=htl9ZMJOxDI3UZ05gbbiG2%2BjqosCkZRdWUrsSRKtRwWeIbxrkRZ4%2FsMgzYPdklJu&busi_data=eyJncm91cENvZGUiOiI3NjczOTA5MTQiLCJ0b2tlbiI6InZEajQ3NlZ1UDJzZ24weGhSeWcvN2ozajU1MjJOTWdyU0daaHYybHJ5TWZ2NlBUei83K0tIaVYzWGo3VVFHaFUiLCJ1aW4iOiIxNjg0NzgxNDEifQ%3D%3D&data=rrTbqqkhWN_2d723UHIhrUcCpgVwdevfTUJwzuois1IKTOlbnVnrhAvCOLZ_IcklUEl4lf0eJyOxbVr1M84LEg&svctype=4&tempid=h5_group_info" class="help-button qq-button" target="_blank">
             <div class="help-icon" style="background: #12b7f5;">
-              <img src="https://raw.githubusercontent.com/pigeoh/Firefight-TWR/main/icon-qq.png" alt="QQ图标" onerror="this.style.display='none'; this.parentNode.innerHTML='QQ'">
+              <img src="https://raw.githubusercontent.com/pigeoh/Firefight-TWR/main/icon-qq.png" alt="qq_icon" onerror="this.style.display='none'; this.parentNode.innerHTML='qq_icon_fail'">
             </div>
-            <div class="button-title">QQ群</div>
-            <div class="button-desc">加入我们的QQ群获取帮助</div>
+            <div class="button-title" data-locale-key="help.qq.title"></div>
+            <div class="button-desc" data-locale-key="help.qq.desc"></div>
           </a>
 
           <a href="https://discord.com/channels/1007568260918693959/1209175441420722186" class="help-button discord-button" target="_blank">
             <div class="help-icon" style="background: #5865f2;">
-              <img src="https://raw.githubusercontent.com/pigeoh/Firefight-TWR/main/icon-discord.png" alt="Discord图标" onerror="this.style.display='none'; this.parentNode.innerHTML='Discord'">
+              <img src="https://raw.githubusercontent.com/pigeoh/Firefight-TWR/main/icon-discord.png" alt="discord_icon" onerror="this.style.display='none'; this.parentNode.innerHTML='discord_icon_fail'">
             </div>
-            <div class="button-title">Discord</div>
-            <div class="button-desc">关注我们的Discord帖子</div>
+            <div class="button-title" data-locale-key="help.discord.title"></div>
+            <div class="button-desc" data-locale-key="help.discord.desc"></div>
           </a>
         </div>
 
-        <button class="back-button" id="back-button">返回</button>
+        <button class="back-button" id="back-button" data-locale-key="button.back"></button>
       </div>
     </div>
 
     <!-- 鸣谢页面 -->
     <div class="page hidden" id="thanks-page">
       <div class="thanks-page">
-        <h2 class="thanks-title">鸣谢</h2>
+        <h2 class="thanks-title" data-locale-key="thanks.title"></h2>
 
-        <div class="thanks-content">
-          <p>感谢以下贡献者为项目付出的努力和支持：</p>
-        </div>
+        <div class="thanks-content" data-locale-key="thanks.content"></div>
 
         <div class="contributors">
           <div class="contributor-card">
-            <div class="contributor-name">Sasha Braus</div>
-            <div class="contributor-role">项目负责人</div>
+            <div class="contributor-name" data-locale-key="contributor.sasha.name"></div>
+            <div class="contributor-role" data-locale-key="contributor.sasha.role"></div>
           </div>
 
           <div class="contributor-card">
-            <div class="contributor-name">Wudoo</div>
-            <div class="contributor-role">游戏代码</div>
+            <div class="contributor-name" data-locale-key="contributor.wudoo.name"></div>
+            <div class="contributor-role" data-locale-key="contributor.wudoo.role"></div>
           </div>
 
           <div class="contributor-card">
-            <div class="contributor-name">你</div>
-            <div class="contributor-role">游玩本模组</div>
+            <div class="contributor-name" data-locale-key="contributor.you.name"></div>
+            <div class="contributor-role" data-locale-key="contributor.you.role"></div>
           </div>
         </div>
 
-        <button class="back-button" id="back-button-thanks">返回</button>
+        <button class="back-button" id="back-button-thanks" data-locale-key="button.back"></button>
       </div>
     </div>
 
     <!-- 介绍页面 -->
     <div class="page hidden" id="intro-page">
       <div class="intro-page">
-        <h2 class="intro-title">介绍</h2>
+        <h2 class="intro-title" data-locale-key="intro.title"></h2>
 
-        <div class="intro-content">Firefight"冷战热斗"模组是游戏Firefight衍生出的一款以"冷战"为题材的游戏mod，本mod主要用于还原模拟架空冷战时期两大国与第三世界国家的各类地区冲突，在游戏中，你可以扮演中国、华约、北约、日本、韩国、越南、阿根廷、埃及、叙利亚、黎巴嫩、中国台湾、朝鲜、南斯拉夫、以色列等等（后续还会添加更多阵营）本mod内容丰富，品质优秀，平衡性良好，各类数据依据现实改编，同时本mod拥有自己的游戏机制（抗穿与抗破的区分）总之，这是一款追求真实与硬核的mod，欢迎你游玩这款mod，赶紧去体验冷战时期的甲弹对抗与步兵冲击吧。</div>
+        <div class="intro-content" data-locale-key="intro.content"></div>
 
         <div class="theme-image-container">
           <div class="theme-image">
             <div class="theme-image-placeholder">
-              <img src="https://raw.githubusercontent.com/pigeoh/Firefight-TWR/main/theme-img.png" alt="主题图" onerror="this.style.display='none'; this.parentNode.innerHTML='Theme'">
+              <img src="https://raw.githubusercontent.com/pigeoh/Firefight-TWR/main/theme-img.png" alt="theme_image" onerror="this.style.display='none'; this.parentNode.innerHTML='theme_load_fail'">
             </div>
           </div>
-          <div class="image-caption">本次更新版号10.5.1</div>
+          <div class="image-caption" data-locale-key="update.version"></div>
         </div>
 
-        <button class="back-button" id="back-button-intro">返回</button>
+        <button class="back-button" id="back-button-intro" data-locale-key="button.back"></button>
       </div>
     </div>
 
     <!-- 下载页面 -->
     <div class="page hidden" id="download-page">
       <div class="download-page">
-        <h2 class="download-title">下载</h2>
+        <h2 class="download-title" data-locale-key="download.title"></h2>
 
         <div class="declaration">
-          <div class="declaration-title">重要声明</div>
-          <div class="declaration-content">
-            本模组仅供内部学习交流，！！！绝对禁止！！！在非官方渠道（非官方的Discord帖子，非官方的QQ群聊，除我们的网页以外的其他未授权的网站网页，未经授权发布的应用市场）传播本模组。拒绝盗版，拒绝改版，从我做起。希望大家支持正版，支持创作者。
-          </div>
+          <div class="declaration-title" data-locale-key="download.declaration.title"></div>
+          <div class="declaration-content" data-locale-key="download.declaration.content"></div>
         </div>
 
-        <a href="https://drive.google.com/uc?export=download&id=1BdmDu3xAWDIEgdkMDicsWWbC7Yn_dJyX" class="apk-download-btn">下载 APK</a>
+        <a href="https://drive.google.com/uc?export=download&id=1BdmDu3xAWDIEgdkMDicsWWbC7Yn_dJyX" class="apk-download-btn" data-locale-key="button.download.apk"></a>
 
-        <button class="back-button" id="back-button-download">返回</button>
+        <button class="back-button" id="back-button-download" data-locale-key="button.back"></button>
       </div>
     </div>
   </nav>
 
   <script>
+    // 语言文件加载函数
+    function loadLocale(lang) {
+      return fetch(`lang_${lang}.properties`)
+        .then(response => response.text())
+        .then(data => {
+          const lines = data.split('\n');
+          const localeData = {};
+          
+          lines.forEach(line => {
+            if (line.trim() && !line.startsWith('#')) {
+              const [key, value] = line.split('=');
+              if (key && value) {
+                localeData[key.trim()] = value.trim();
+              }
+            }
+          });
+          
+          return localeData;
+        })
+        .catch(error => {
+          console.error('Error loading locale file:', error);
+          return {};
+        });
+    }
+
+    // 应用本地化文本
+    function applyLocalization(localeData) {
+      document.querySelectorAll('[data-locale-key]').forEach(element => {
+        const key = element.getAttribute('data-locale-key');
+        if (localeData[key]) {
+          if (element.tagName === 'INPUT' || element.tagName === 'BUTTON') {
+            element.value = localeData[key];
+          } else {
+            element.textContent = localeData[key];
+          }
+        }
+      });
+    }
+
+    // 初始化页面
     document.addEventListener('DOMContentLoaded', function() {
+      // 检测浏览器语言
+      const userLang = navigator.language || navigator.userLanguage;
+      const lang = userLang.startsWith('zh') ? 'zh' : 'en';
+      
+      // 加载并应用本地化
+      loadLocale(lang).then(localeData => {
+        applyLocalization(localeData);
+        
+        // 页面切换功能
         const helpButton = document.getElementById('help-button');
         const introLink = document.getElementById('intro-link');
         const thanksLink = document.getElementById('thanks-link');
@@ -832,7 +877,6 @@
         const introPage = document.getElementById('intro-page');
         const downloadPage = document.getElementById('download-page');
         
-        // 页面切换函数
         function switchPage(fromPage, toPage) {
             fromPage.classList.add('hidden');
             fromPage.classList.remove('active');
@@ -843,45 +887,38 @@
             }, 50);
         }
         
-        // 点击"获取帮助"按钮
         helpButton.addEventListener('click', function() {
             switchPage(mainPage, helpPage);
         });
         
-        // 点击"介绍"链接
         introLink.addEventListener('click', function() {
             switchPage(mainPage, introPage);
         });
         
-        // 点击"鸣谢"链接
         thanksLink.addEventListener('click', function() {
             switchPage(mainPage, thanksPage);
         });
         
-        // 点击"下载"链接
         downloadLink.addEventListener('click', function() {
             switchPage(mainPage, downloadPage);
         });
         
-        // 点击帮助页面的返回按钮
         backButton.addEventListener('click', function() {
             switchPage(helpPage, mainPage);
         });
         
-        // 点击鸣谢页面的返回按钮
         backButtonThanks.addEventListener('click', function() {
             switchPage(thanksPage, mainPage);
         });
         
-        // 点击介绍页面的返回按钮
         backButtonIntro.addEventListener('click', function() {
             switchPage(introPage, mainPage);
         });
         
-        // 点击下载页面的返回按钮
         backButtonDownload.addEventListener('click', function() {
             switchPage(downloadPage, mainPage);
         });
+      });
     });
   </script>
 </body>
